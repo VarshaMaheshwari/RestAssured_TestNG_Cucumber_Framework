@@ -1,11 +1,14 @@
 package stepDefinitions;
+import com.google.gson.Gson;
 import commonCode.ScenarioContext;
+import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response ;
 import io.restassured.specification.RequestSpecification;
 import io.cucumber.java.en.*;
 import org.testng.Assert;
+import pojos.Students;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,8 @@ public class StudentsGetAPIs {
     String baseUrl ="http://localhost:8086/student";
     ScenarioContext context = new ScenarioContext();
     String stuListUrl= baseUrl+ "/list";
+    String createStuUrl= baseUrl+ "/student";
+
     @Given("I have all required data for API call")
     public void i_have_all_required_data_for_api_call() {
         // Write code here that turns the phrase above into concrete actions
@@ -51,5 +56,43 @@ public class StudentsGetAPIs {
 
         }
 
+    @Given("I have {string} {string} {string} {string} {string} data API payload")
+    public void iHaveDataAPIPayload(String fName, String lName, String email, String program, String courses) {
+        Students stuPayload= new Students();
+        stuPayload.setfName(fName);
+        stuPayload.setLName(lName);
+        stuPayload.setEmail(email);
+        stuPayload.setProgramme(program);
+        String arr_courses[] =courses.split(",");
+        stuPayload.setCourses(arr_courses);
+        Gson gson=new Gson();
+       String payload =gson.toJson(stuPayload);
+       System.out.println(payload);
+       context.setContext("payload",payload);
+        RequestSpecification reqSep= RestAssured.given().contentType(ContentType.JSON);
+        context.setContext("request",reqSep);
+    }
+    @When("I call create students api")
+    public void i_call_create_students_api() {
+        String payload = (String) context.getContext("payload");
+        RequestSpecification req= (RequestSpecification) context.getContext("request");
+        System.out.println(baseUrl);
+        Response res= req.when().body(payload).post(baseUrl);
+        res.prettyPrint();
+        context.setContext("response",res);
+    }
+    @Then("I get response status as {int} with response body contains success message")
+    public void i_get_response_status_as_with_response_body_contains_success_msg(Integer int1) {
+        // Write code here that turns the phrase above into concrete actions
+        System.out.println("I am in Then step");
+        Response res = (Response)context.getContext("response");
+        Assert.assertEquals(res.statusCode(), 201);
+        Assert.assertEquals(res.jsonPath().get("msg"), "Student added");
 
+    }
+
+
+//    @Given("I have {string} {string} {string} {string} {string} data API payload")
+//    public void iHaveDataAPIPayload(String arg0, String arg1, String arg2, String arg3, String arg4) {
+//    }
 }
