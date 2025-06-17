@@ -14,5 +14,7 @@ Feature: Testing Students app CRUD operations
       | Test1     | TestUser1 | testuser101@autotest.com | Computer science | DSA, Java, Python  |
       | Test2     | TestUser2 | testuser102@autotest.com | Computer science | DSA, Java, C sharp |
 
+    Scenario: Update student details
+
 
 
