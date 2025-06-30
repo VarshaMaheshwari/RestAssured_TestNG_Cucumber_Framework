@@ -11,7 +11,9 @@ import org.testng.Assert;
 import pojos.Students;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class StudentsGetAPIs {
     String baseUrl ="http://localhost:8086/student";
@@ -23,7 +25,7 @@ public class StudentsGetAPIs {
     public void i_have_all_required_data_for_api_call() {
         // Write code here that turns the phrase above into concrete actions
         System.out.println("I am in Given step");
-        RequestSpecification reqSep=RestAssured.given().contentType(ContentType.JSON) ;
+        RequestSpecification reqSep=RestAssured.given() ;
         context.setContext("request",reqSep);
 
     }
@@ -44,15 +46,37 @@ public class StudentsGetAPIs {
         // Write code here that turns the phrase above into concrete actions
         System.out.println("I am in Then step");
             Response res= (Response)context.getContext("response");
-//            res.prettyPrint();
-            int id_size=res.jsonPath().getList("id").size();
-            List<String> nameList=res.jsonPath().getList("firstName");
-            for(String name :nameList){
-                System.out.println("Student name is:"+ name);
+            res.prettyPrint();
+        try {
+            int id_size = res.jsonPath().getList("id").size();
+            List<String> nameList = res.jsonPath().getList("firstName");
+            int index_cullen =  res.jsonPath().getList("firstName").indexOf("Cullen");
+            for (String name : nameList) {
+               System.out.println("Student name is:" + name);
             }
-            System.out.println("Total no. of students in response is:"+ id_size);
-            System.out.println("Total no. of students name in response is:"+ nameList.size());
+            System.out.println("Total no. of students in response is:" + id_size);
+            Assert.assertEquals(id_size,108);
+            System.out.println("Total no. of students name in response is:" + nameList.size());
+            System.out.println("Index for student name Cullen:" + index_cullen);
+            Assert.assertEquals(index_cullen,4);
 
+            //find all unique courses from the response
+            List<List<String>> coursesList = res.jsonPath().getList("courses");
+            Set unique_Courses = new HashSet<String>();
+            for(List <String> courses :coursesList){
+                for (String el:courses){
+                unique_Courses.add(el);
+                }
+            }
+            System.out.println(unique_Courses);
+            //find all student firstname that contains programme as Financial Analysis
+            List<String> stuFinProgm = res.jsonPath().getList("findAll{it.programme.contains('Financial Analysis')}.firstName");
+            System.out.println(stuFinProgm.toString());
+            //find all student name that contains course Java
+
+        }catch (NullPointerException e){
+            System.out.println("Null pointer exception caught");
+        }
 
         }
 
@@ -67,7 +91,7 @@ public class StudentsGetAPIs {
         stuPayload.setCourses(arr_courses);
         Gson gson=new Gson();
        String payload =gson.toJson(stuPayload);
-       System.out.println(payload);
+       System.out.println("payload:"+payload);
        context.setContext("payload",payload);
         RequestSpecification reqSep= RestAssured.given().contentType(ContentType.JSON);
         context.setContext("request",reqSep);
