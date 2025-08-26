@@ -18,9 +18,7 @@ Add scenario for update and delete student using Put and Delete APIs
 ##### To Do:
 - Add Allure reporting
 - Move config data into Properties
-- Setup testng.xml file- done
-- Add other open API feature file  
-- complex response assertion scenarios- done in first scenario
+- Add other open API feature file
 - Integrate with Jenkins or AzureDevOps
 - Create docker image for the framework
 

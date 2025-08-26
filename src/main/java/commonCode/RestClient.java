@@ -1,5 +1,6 @@
 package commonCode;
 
+import io.cucumber.java.sl.In;
 import io.restassured.RestAssured;
 import io.restassured.internal.RequestSpecificationImpl;
 import io.restassured.response.Response;
@@ -25,6 +26,14 @@ public class RestClient{
         pathParamMap.put(pathParam,pathParamVal);
         reqSpec = RestAssured.given().pathParams(pathParamMap);
          res = reqSpec.when().log().all().get(url);
+        return res;
+    }
+
+    public Response doGetwQueryParam(String url,  Map<String, Integer> queryParamMap){
+//        HashMap<String,String> queryParamMap = new HashMap<String, String>();
+//        queryParamMap.put(queryParam,queryParamVal);
+        reqSpec = RestAssured.given().queryParams(queryParamMap);
+        res = reqSpec.when().log().all().get(url);
         return res;
     }
 

@@ -52,12 +52,12 @@
       <artifactId>json-path</artifactId>
       <version>5.5.3</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>json-schema-validator</artifactId>
-      <version>5.5.3</version>
-    </dependency>
+<!--    &lt;!&ndash; https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>io.rest-assured</groupId>-->
+<!--      <artifactId>json-schema-validator</artifactId>-->
+<!--      <version>5.5.3</version>-->
+<!--    </dependency>-->
     <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-rest-assured -->
     <dependency>
       <groupId>io.qameta.allure</groupId>
