@@ -1,14 +1,7 @@
 package commonCode;
-
-import io.cucumber.java.sl.In;
 import io.restassured.RestAssured;
-import io.restassured.internal.RequestSpecificationImpl;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-
-import java.io.File;
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RestClient{
@@ -21,18 +14,14 @@ public class RestClient{
         return res;
     }
 
-    public Response doGetwPathParam(String url, String pathParam, String pathParamVal){
-        HashMap<String,String> pathParamMap = new HashMap<String, String>();
-        pathParamMap.put(pathParam,pathParamVal);
+    public Response doGetwPathParam(String url, Map<String,String> pathParamMap){
         reqSpec = RestAssured.given().pathParams(pathParamMap);
          res = reqSpec.when().log().all().get(url);
         return res;
     }
 
-    public Response doGetwQueryParam(String url,  Map<String, Integer> queryParamMap){
-//        HashMap<String,String> queryParamMap = new HashMap<String, String>();
-//        queryParamMap.put(queryParam,queryParamVal);
-        reqSpec = RestAssured.given().queryParams(queryParamMap);
+    public Response doGetwQueryParam(String url, Map<String,String> headersMap, Map<String, Integer> queryParamMap){
+        reqSpec = RestAssured.given().headers(headersMap).queryParams(queryParamMap);
         res = reqSpec.when().log().all().get(url);
         return res;
     }
