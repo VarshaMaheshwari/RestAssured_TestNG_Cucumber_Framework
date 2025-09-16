@@ -9,22 +9,26 @@ import io.restassured.specification.RequestSpecification;
 import io.cucumber.java.en.*;
 import org.testng.Assert;
 import pojos.Students;
-
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import util.PropertyReader;
 
 public class StudentsGetAPIs {
-    String baseUrl ="http://localhost:8086/student";
+//    PropertyReader propReader= new PropertyReader();
     ScenarioContext context = new ScenarioContext();
-    String stuListUrl= baseUrl+ "/list";
+
+    String baseUrl ="http://localhost:8086/student";
+    String stuListUrl= baseUrl+"/list";
     String createStuUrl= baseUrl+ "/student";
 
     @Given("I have all required data for API call")
     public void i_have_all_required_data_for_api_call() {
-        // Write code here that turns the phrase above into concrete actions
         System.out.println("I am in Given step");
+        System.out.println(baseUrl );
         RequestSpecification reqSep=RestAssured.given() ;
         context.setContext("request",reqSep);
 
@@ -32,7 +36,6 @@ public class StudentsGetAPIs {
 
     @When("I call get all students api")
     public void i_call_get_all_students_api() {
-        // Write code here that turns the phrase above into concrete actions
         System.out.println("I am in When step");
         RequestSpecification req= (RequestSpecification) context.getContext("request");
         System.out.println(stuListUrl);
@@ -43,7 +46,6 @@ public class StudentsGetAPIs {
 
     @Then("I get response status as {int} with valid response body")
     public void i_get_response_status_as(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
         System.out.println("I am in Then step");
             Response res= (Response)context.getContext("response");
             res.prettyPrint();
@@ -72,13 +74,18 @@ public class StudentsGetAPIs {
             //find all student firstname that contains programme as Financial Analysis
             List<String> stuFinProgm = res.jsonPath().getList("findAll{it.programme.contains('Financial Analysis')}.firstName");
             System.out.println(stuFinProgm.toString());
-            //find all student name that contains course Java
 
+            //Hamcrest matchers
+            assertThat(nameList, hasSize(108));
+            assertThat(nameList, hasItems("Orson","Cullen","Reece","Vernon"));
+            //find all student name that contains course Java
+           //assertThat(coursesList, );
         }catch (NullPointerException e){
             System.out.println("Null pointer exception caught");
         }
 
         }
+
 
     @Given("I have {string} {string} {string} {string} {string} data API payload")
     public void iHaveDataAPIPayload(String fName, String lName, String email, String program, String courses) {
@@ -107,7 +114,6 @@ public class StudentsGetAPIs {
     }
     @Then("I get response status as {int} with response body contains success message")
     public void i_get_response_status_as_with_response_body_contains_success_msg(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
         System.out.println("I am in Then step");
         Response res = (Response)context.getContext("response");
         Assert.assertEquals(res.statusCode(), 201);

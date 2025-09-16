@@ -11,10 +11,10 @@ Feature: Testing Students app CRUD operations
     Then I get response status as 201 with response body contains success message
     Examples:
       | firstName | lastName  | email                  | programme        | courses            |
-      | Test1     | TestUser1 | testuser1011@autotest.com | Computer science | DSA, Java, Python  |
-      | Test2     | TestUser2 | testuser1012@autotest.com | Computer science | DSA, Java, C sharp |
+      | Test901     | TestUser1 | testuser903434@gtest.com | Computer science | DSA, Java, Python  |
+     # | Test2     | TestUser2 | testuser902@autotest.com | Computer science | DSA, Java, C sharp |
 
-    Scenario: Update student details
+#    Scenario: Update student details
 
 
 
