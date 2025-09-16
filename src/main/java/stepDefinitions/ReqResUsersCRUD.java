@@ -9,13 +9,16 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.reporters.jq.INavigatorPanel;
+import util.PropertyReader;
 
 import java.util.HashMap;
+import java.util.Properties;
 
 public class ReqResUsersCRUD {
-
-    String baseURL= "https://reqres.in/api";
-    String userUrl= "/users";
+    PropertyReader propertyReader= new PropertyReader();
+     Properties prop= propertyReader.readPropertyFile();
+    String baseURL= prop.getProperty("reqres_baseURL");
+    String userUrl=  prop.getProperty("reqres_userURL");
     RestClient restClient= new RestClient();
     ScenarioContext scenarioContext = new ScenarioContext();
     String endpoint="";
